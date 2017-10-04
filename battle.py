@@ -1,7 +1,7 @@
 import ezpygame_fixed as ez
 import pygame
 import arena
-from arena import engine, mc, creep
+from arena import engine, mc, creep, spawner
 
 
 class Battle(ez.Scene):
@@ -14,6 +14,10 @@ class Battle(ez.Scene):
 
         self.engine.mc = arena.mc.Main(130, 250)
 
+        self.engine.add_spawn(spawner.Spawner(200, 200))
+        self.engine.add_spawn(spawner.Spawner(500, 500))
+        self.engine.add_spawn(spawner.Spawner(800, 200))
+
         self.mode = 'turn'
 
         self.font = pygame.font.SysFont(pygame.font.get_default_font(), 20, bold=False)
@@ -21,18 +25,13 @@ class Battle(ez.Scene):
     def draw(self, screen):
         screen.fill((250, 150, 70))
 
+        for s in self.engine.spawners:
+            s.draw(screen)
+
         for c in self.engine.creeps:
-            if c.tail:
-                pygame.draw.line(screen, (50, 50, 50), c.pos, c.tail, 6)
+            c.draw(screen)
 
-            pygame.draw.circle(screen, (50, 50, 50), c.ipos, 6)
-            pygame.draw.circle(screen, (0, 0, 0), c.ipos, 6, 1)
-
-        if self.engine.mc.tail:
-            pygame.draw.line(screen, (0, 0, 100), self.engine.mc.pos, self.engine.mc.tail, 10)
-
-        pygame.draw.circle(screen, (30, 70, 250), self.engine.mc.ipos, 10)
-        pygame.draw.circle(screen, (0, 0, 100), self.engine.mc.ipos, 10, 1)
+        self.engine.mc.draw(screen)
 
          # HUD
         screen.blit(self.font.render(self.mode, 10, (250, 250, 250)), (30, 30))

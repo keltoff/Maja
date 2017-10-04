@@ -1,13 +1,14 @@
 import pos_math as pmath
 from ent import Entity
+import pygame
 
 
 class Creep(Entity):
     def __init__(self, x=0, y=0):
         Entity.__init__(self, x, y)
 
-    def update(self, dt):
-        Entity.update(self, dt)
+    def ticks(self, dt):
+        self.move(dt)
 
     def move(self, dist):
         target = self.eng.mc.pos
@@ -16,3 +17,10 @@ class Creep(Entity):
         self.tail_duration = 500
 
         self.pos = pmath.close(self.pos, target, 0.2 * dist, 100)
+
+    def draw(self, screen):
+        if self.tail:
+            pygame.draw.line(screen, (50, 50, 50), self.pos, self.tail, 6)
+
+        pygame.draw.circle(screen, (50, 50, 50), self.ipos, 6)
+        pygame.draw.circle(screen, (0, 0, 0), self.ipos, 6, 1)
