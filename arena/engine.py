@@ -5,33 +5,26 @@ class Engine(object):
         self.creeps = []
         self.spawners = []
 
-    def turn(self):
-
-        self.mc.upd_turn()
+    def all_components(self):
+        yield self.mc
 
         for c in self.creeps:
-            c.upd_turn()
+            yield c
 
         for s in self.spawners:
-            s.upd_turn()
+            yield s
+
+    def turn(self):
+        for com in self.all_components():
+            com.upd_turn()
 
     def tick(self, t):
-        self.mc.upd_time(t)
-
-        for c in self.creeps:
-            c.upd_time(t)
-
-        for s in self.spawners:
-            s.upd_time(t)
+        for com in self.all_components():
+            com.upt_time(t)
 
     def update(self, t):
-        self.mc.update(t)
-
-        for c in self.creeps:
-            c.update(t)
-
-        for s in self.spawners:
-            s.update(t)
+        for com in self.all_components():
+            com.update(t)
 
     def add(self, creep):
         self.creeps.append(creep)
