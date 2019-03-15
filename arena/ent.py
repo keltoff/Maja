@@ -46,3 +46,6 @@ class Entity(object):
 
     def draw(self, screen):
         pass
+
+    def alive(self):
+        return True

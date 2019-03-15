@@ -13,7 +13,6 @@ class Main(Entity):
     def ticks(self, dt):
         self.move(dt)
 
-
     def move(self, dist):
         if self.target:
 

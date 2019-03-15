@@ -6,6 +6,7 @@ import pygame
 class Creep(Entity):
     def __init__(self, x=0, y=0):
         Entity.__init__(self, x, y)
+        self.dead = False
 
     def ticks(self, dt):
         self.move(dt)
@@ -24,3 +25,6 @@ class Creep(Entity):
 
         pygame.draw.circle(screen, (50, 50, 50), self.ipos, 6)
         pygame.draw.circle(screen, (0, 0, 0), self.ipos, 6, 1)
+
+    def alive(self):
+        return not self.dead
