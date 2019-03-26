@@ -2,8 +2,8 @@ import ezpygame_fixed as ez
 import pygame
 import arena
 from arena import engine, mc, creep, spawner
-from arena.spells.laser import Laser
-from arena.effect import Ring, Beam
+from arena.spells import Laser, Wave
+
 
 class Battle(ez.Scene):
     def __init__(self):
@@ -23,7 +23,8 @@ class Battle(ez.Scene):
 
         self.font = pygame.font.SysFont(pygame.font.get_default_font(), 20, bold=False)
 
-        self.current_spell = Laser()
+        self.spells = [Laser(), Wave(length=200)]
+        self.current_spell = self.spells[0]
 
         pygame.mouse.set_visible(False)
 
@@ -47,7 +48,8 @@ class Battle(ez.Scene):
             e.draw(screen)
 
          # HUD
-        screen.blit(self.font.render(self.mode, 10, (250, 250, 250)), (30, 30))
+        # screen.blit(self.font.render(self.mode, 10, (250, 250, 250)), (30, 30))
+        screen.blit(self.font.render(self.current_spell.name, 10, (250, 250, 250)), (30, 30))
 
         self.current_spell.draw_cursor(screen, self.engine.mc, pygame.mouse.get_pos())
 
@@ -63,14 +65,16 @@ class Battle(ez.Scene):
             # x, y = event.pos
             if event.button == 1:
                 self.current_spell.proc(self.engine, event.pos)
+                self.engine.turn()
             if event.button == 3:
                 self.engine.mc.target = event.pos
                 if self.mode == 'turn':
                     self.engine.turn()
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_TAB:
-                if self.mode == 'rt':
-                    self.mode = 'turn'
-                else:
-                    self.mode = 'rt'
+                # if self.mode == 'rt':
+                #     self.mode = 'turn'
+                # else:
+                #     self.mode = 'rt'
+                self.current_spell = self.spells[(self.spells.index(self.current_spell) + 1) % len(self.spells)]
 

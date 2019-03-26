@@ -10,6 +10,7 @@ class Laser:
         self.targeting_line = None
         self.width = width
         self.length = sys.maxint
+        self.name = 'Beam'
 
     def targeting(self, origin, cursor):
         self.targeting_line = cmp.Line(origin, cursor)
