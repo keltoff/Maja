@@ -2,7 +2,7 @@ import computations as cmp
 import pygame.draw as pd
 import pygame
 from pygame.color import Color
-from arena.effect import Beam, Ring
+from arena.effect import CircularWave, Ring
 import math
 import sys
 
@@ -61,5 +61,8 @@ class Wave:
                 will.dead = True
                 engine.add_eff(Ring(will.ipos))
 
-        # edge = self.targeting_line.hit_edge((1280, 720))
-        # engine.add_eff(Beam(engine.mc.ipos, edge, width=self.width))
+        tx, ty = target
+        ox, oy = engine.mc.ipos
+        angle = math.degrees(math.atan2(oy - ty, tx - ox))
+        engine.add_eff(CircularWave(engine.mc.ipos, self.length, angle, self.arc))
+
